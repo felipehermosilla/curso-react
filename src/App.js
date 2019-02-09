@@ -1,44 +1,56 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
 
-const app = props => {
-  const [personsState, setPersonsState] = useState({
-    persons:[
-      {name:'Max', age:30},
-      {name:'Manu', age:33},
-      {name:'Rex', age:32}
+class App extends Component {
+  state = {
+    persons: [
+      { name: 'Max', age: 28 },
+      { name: 'Manu', age: 29 },
+      { name: 'Stephanie', age: 26 }
     ],
-    otherProperty: 'This is another property'
-  });
+    otherState: 'some other value'
+  };
 
-  const [otherState, setOtherState] = useState('some other value');
-  console.log(personsState, otherState);
-  const switchNameHandler = () => {
-   //console.log('clicked!!');
-   //this.persons[0].name = 'Maximilian'; DO NOT DO This
-   setPersonsState({
-     persons:[
-       {name:'Maximilian', age:30},
-       {name:'Manu', age:33},
-       {name:'Rex', age:28}
-     ],
-     otherProperty: 'This is another property'
-   });
+  switchNameHandler = (newName) => {
+    // console.log('Was clicked!');
+    // DON'T DO THIS: this.state.persons[0].name = 'Maximilian';
+    this.setState({
+      persons: [
+        { name: newName, age: 28 },
+        { name: 'Manu', age: 29 },
+        { name: 'Stephanie', age: 27 }
+      ]
+    });
+  };
 
- };
-  return (
-    <div className="App">
-      <h1>Hi, I'm a React app</h1>
-      <p>This is really working!</p>
-      <button onClick={switchNameHandler}>Click on me!</button>
-      <Person name={personsState.persons[0].name} age={personsState.persons[0].age}></Person>
-      <Person name={personsState.persons[1].name} age={personsState.persons[1].age}></Person>
-      <Person name={personsState.persons[2].name} age={personsState.persons[2].age}>My Hobbie is: soccer</Person>
-    </div>
-  );
-    //return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does it work now!'));
+  render() {
+    return (
+      <div className="App">
+        <h1>Hi, I'm a React App</h1>
+        <p>This is really working!</p>
+        <button onClick={() => this.switchNameHandler('Maximilian!!')}>Switch Name</button>
+        <Person
+          name={this.state.persons[0].name}
+          age={this.state.persons[0].age}
+          click={this.switchNameHandler.bind(this, 'Maximilian')}
+        />
+        <Person
+          name={this.state.persons[1].name}
+          age={this.state.persons[1].age}
+          click={this.switchNameHandler.bind(this, 'Max')}
+        >
+          My Hobbies: Racing
+        </Person>
+        <Person
+          name={this.state.persons[2].name}
+          age={this.state.persons[2].age}
+        />
+      </div>
+    );
+    // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
+  }
+}
 
-};
-
-export default app;
+export default App;
+//NOTE: try to use bind instead of arrow function to attach a function event
