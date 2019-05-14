@@ -25,15 +25,18 @@ class App extends Component {
     });
   };
 
-  nameChangedHandler = (event) => {
-    this.setState({
-      persons: [
-        { name: 'Max', age: 28 },
-        { name: event.target.value, age: 29 },
-        { name: 'Stephanie', age: 27 }
-      ]
-    });
+  deletePersonHandler = (personIndex) => {
+    // Important: slice() create a new array from the original array.
+    // it's recommended to use it to avoid bad behavior or unexpected errors
+    //const persons = this.state.persons.slice();
+    // ES6 sintax alternative
+    // NOTE: you should always update state in an inmutable fashion,
+    // without changing the current state
+    const persons = [...this.state.persons];
+    persons.splice(personIndex, 1);
+    this.setState({persons:persons});
   };
+
  tooglePersonHandler = ()=>{
    const doesShow = this.state.showPersons;
    this.setState({
@@ -53,10 +56,11 @@ class App extends Component {
     if(this.state.showPersons){
       persons = (
         <div>
-          {this.state.persons.map(person => {
+          {this.state.persons.map((person, index) => {
             return <Person
               name={person.name}
               age={person.age}
+              click={() => this.deletePersonHandler(index)}
             />
           })}
         </div>
