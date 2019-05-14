@@ -5,24 +5,33 @@ import Person from './Person/Person';
 class App extends Component {
   state = {
     persons: [
-      { name: 'Max', age: 28 },
-      { name: 'Manu', age: 29 },
-      { name: 'Stephanie', age: 26 }
+      {id:'4jgujg', name: 'Max', age: 28 },
+      {id:'f93kgk', name: 'Manu', age: 29 },
+      {id:'p4i7b7', name: 'Stephanie', age: 26 }
     ],
     otherState: 'some other value',
     showPersons: false
   };
 
-  switchNameHandler = (newName) => {
+  switchNameHandler = (event, id) => {
     // console.log('Was clicked!');
     // DON'T DO THIS: this.state.persons[0].name = 'Maximilian';
-    this.setState({
-      persons: [
-        {id:"kf28f8", name: newName, age: 28 },
-        {id:"fsiis3", name: 'Manu', age: 29 },
-        {id:"pa9cjg", name: 'Stephanie', age: 27 }
-      ]
+
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
     });
+    // This ES6 sintax does avoid to mutate the state directly by creating
+    // a new object from the state data element
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+    // Another alternative
+    //const person = Object.assign({}, this.state.persons[personIndex]):
+    person.name = event.target.value;
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState({ persons: persons });
   };
 
   deletePersonHandler = (personIndex) => {
@@ -62,6 +71,7 @@ class App extends Component {
               age={person.age}
               click={() => this.deletePersonHandler(index)}
               key={person.id}
+              changed={(event)=> this.switchNameHandler(event, person.id)}
             />
           })}
         </div>
@@ -75,7 +85,6 @@ class App extends Component {
         {persons}
       </div>
     );
-    // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
   }
 }
 
