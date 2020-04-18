@@ -1,4 +1,4 @@
-/* .person {
+.Person {
   width: 60%;
   margin: 16px auto;
   border: 1px solid #eee;
@@ -8,8 +8,8 @@
   cursor: pointer;
 }
 
-@media (min-width: 500px) {
-  .person {
+@media (min-width: 600px) {
+  .Person {
     width: 450px;
   }
-} */
+}
